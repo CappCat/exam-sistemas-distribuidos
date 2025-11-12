@@ -1,0 +1,12 @@
+# Results Analysis - Parte 1
+
+Tareas generadas: 20
+
+## Resultados
+
+- Hilos: tiempo = 1.505s, tareas completadas = 20
+- Procesos: tiempo = 2.301s, tareas completadas = 20
+
+## Observaciones
+
+- En este experimento los hilos fueron más rápidos. Esto puede darse cuando el trabajo es I/O bound o simulado por time.sleep().
