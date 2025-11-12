@@ -1,7 +1,5 @@
 import hashlib
 from datetime import datetime
-from pathlib import Path
-import random
 import sys
 
 from pymongo import MongoClient
@@ -51,18 +49,28 @@ class DistributedStorage:
         coll = self.db1['documents'] if node_key == 'db1' else self.db2['documents']
         # Usar upsert para evitar duplicados si se reinserta
         coll.replace_one({'_id': doc['_id']}, doc, upsert=True)
+        if node_name == 'node1':
+            print('Documento {} insertado en nodo 1'.format(doc['_id']))
+        else:
+            print('Documento {} insertado en nodo 2'.format(doc['_id']))
         return True, node_name
 
     def find_document(self, document_id):
         results = []
         doc1 = self.db1['documents'].find_one({'_id': document_id})
         if doc1:
+            print('Documento encontrado en nodo 1')
             doc1['source_node'] = 'node1'
             results.append(doc1)
+        else:
+            print('Documento no encontrado en nodo 1')
         doc2 = self.db2['documents'].find_one({'_id': document_id})
         if doc2:
             doc2['source_node'] = 'node2'
             results.append(doc2)
+            print('Documento encontrado en nodo 2')
+        else:
+            print('Documento no encontrado en nodo 2')
         return results
 
     def get_stats(self):
@@ -123,20 +131,12 @@ def main(argv=None):
         ds.insert_document(d)
 
     stats = ds.get_stats()
-    # Guardar en archivo
-    out = Path(__file__).parent / 'distribution_results.md'
-    with out.open('w', encoding='utf-8') as f:
-        f.write('# Distribución de documentos (MongoDB real)\n\n')
-        f.write(f"Total: {stats['total']}\n\n")
-        f.write(f"- Nodo 1: {stats['node1_count']} ({stats['node1_percent']:.2f}%)\n")
-        f.write(f"- Nodo 2: {stats['node2_count']} ({stats['node2_percent']:.2f}%)\n")
 
     # Print final con estadísticas (solicitado)
     print('\n=== Estadísticas de distribución (MongoDB real) ===')
     print(f"Total documentos: {stats['total']}")
     print(f"Nodo 1: {stats['node1_count']} ({stats['node1_percent']:.2f}%)")
     print(f"Nodo 2: {stats['node2_count']} ({stats['node2_percent']:.2f}%)")
-    print('Archivo de resultados guardado en:', out)
 
 
 if __name__ == '__main__':

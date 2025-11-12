@@ -17,6 +17,21 @@ services:
     networks:
       - mongo-network
 
+  storage:
+    build:
+      context: ./part2-distributed-storage
+    container_name: storage_service
+    depends_on:
+      - mongo1
+      - mongo2
+    networks:
+      - mongo-network
+    volumes:
+      - ./part2-distributed-storage:/app
+    # Pasamos URIs de Mongo usando los nombres de servicio (puerto 27017 dentro de la red)
+    command: ["python", "storage_system.py", "--uri1", "mongodb://mongo1:27017", "--uri2", "mongodb://mongo2:27017"]
+    restart: "no"
+
 networks:
   mongo-network:
     driver: bridge

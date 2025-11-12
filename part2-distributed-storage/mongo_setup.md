@@ -1,6 +1,6 @@
 # MongoDB setup (Docker)
 
-Instrucciones rápidas para levantar dos nodos MongoDB usando `docker-compose`:
+Instrucciones rápidas para levantar dos nodos y el script de python MongoDB usando `docker-compose`:
 
 1. Ir a la carpeta `exam-sistemas-distribuidos` (donde está el `docker-compose.yml`).
 2. Ejecutar:
@@ -15,10 +15,15 @@ docker-compose up -d
 docker ps
 ```
 
-4. Para detenerlos:
+4. Para ver los logs del sistema:
+
+```bash
+docker-compose logs -f storage
+```
+
+5. Para detenerlos:
 
 ```bash
 docker-compose down
 ```
 
-Nota: en este entorno de desarrollo no se ha levantado Docker; el archivo `storage_system.py` incluye un modo `use_mock=True` para permitir pruebas sin MongoDB.
