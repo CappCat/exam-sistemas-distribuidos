@@ -132,12 +132,15 @@ def main(argv=None):
 
     stats = ds.get_stats()
 
+    ds.find_document(10)
+    ds.find_document(99)
+    ds.find_document(200)  # No existe
+
     # Print final con estadísticas (solicitado)
     print('\n=== Estadísticas de distribución (MongoDB real) ===')
     print(f"Total documentos: {stats['total']}")
     print(f"Nodo 1: {stats['node1_count']} ({stats['node1_percent']:.2f}%)")
     print(f"Nodo 2: {stats['node2_count']} ({stats['node2_percent']:.2f}%)")
-
 
 if __name__ == '__main__':
     main()
