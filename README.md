@@ -12,7 +12,9 @@ Requisitos locales para probar Parte 1:
 - Python 3.8+ (no se requieren paquetes externos aparte de la stdlib para ejecutar la Parte 1)
 
 Cómo ejecutar la Parte 1 (desde la raíz `exam-sistemas-distribuidos`):
-
+```powershell
+python .\part1-processes-threads\task_processor.py
+```
 
 El script generará 20 tareas con dificultad aleatoria, ejecutará la versión con hilos y con procesos, medirá tiempos y guardará un análisis en `part1-processes-threads/results_analysis.md`.
 
